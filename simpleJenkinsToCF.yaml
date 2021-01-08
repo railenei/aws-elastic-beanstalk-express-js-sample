@@ -1,0 +1,21 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: "This is a demo description for a script used to push stack through CF plugin"
+Parameters:
+  NetworkStackParameterName:
+    Type: String
+Resources:
+  S3Bucket:
+    Type: AWS::S3::Bucket
+  WebServerInstance:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: t2.micro
+      KeyName: FoeBot
+      SecurityGroups:
+        - Fn::ImportValue:
+            !Sub "${NetworkStackParameterName}-SecurityGroup"
+      ImageId: ami-01720b5f421cf0179
+Outputs:
+  BucketName:
+    Value: !Ref S3Bucket
+    Description: "The Name of the new S3Bucket"
